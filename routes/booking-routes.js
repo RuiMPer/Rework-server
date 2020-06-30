@@ -5,7 +5,7 @@ const Service = require('../models/service-model');
 const Booking = require('../models/booking-model');
 
 // GET route => to retrieve a specific route
-router.get('/tasks/:id', (req, res) => {
+router.get('/bookings/:id', (req, res) => {
   Booking.findById(req.params.id)
     .then(Booking => {
       res.json(Booking)
@@ -14,7 +14,7 @@ router.get('/tasks/:id', (req, res) => {
 
 
 // POST route => to create a new Booking
-router.post('/tasks', (req, res) => {
+router.post('/bookings', (req, res) => {
   Booking.create({
     title: req.body.title,
     description: req.body.description,

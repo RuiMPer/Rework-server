@@ -5,7 +5,7 @@ const Service = require('../models/service-model');
 
 
 //GET route => to get all the Services
-router.get('/Services', (req, res) => {
+router.get('/services', (req, res) => {
   // Gets data from mongoDB
   Service.find()
     .then(allServices => {
@@ -20,7 +20,7 @@ router.get('/Services', (req, res) => {
 
 
 //POST route => to create a new Service
-router.post('/Services', (req, res) => {
+router.post('/services', (req, res) => {
   const { title, description } = req.body;
   Service.create({
     title,
@@ -37,7 +37,7 @@ router.post('/Services', (req, res) => {
 
 
 //GET route => get a specific Service using the id
-router.get('/Services/:id', (req, res) => {
+router.get('/services/:id', (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({message: 'id is not valid'});
     return;
@@ -45,7 +45,7 @@ router.get('/Services/:id', (req, res) => {
   
   Service.findById(req.params.id)
     // getting all the tasks for this Service
-    .populate('tasks')
+    .populate('bookings')
     .then(Service => {
       res.json(Service);
     })
@@ -55,7 +55,7 @@ router.get('/Services/:id', (req, res) => {
 });
 
 // PUT route => to update a specific Service
-router.put('/Services/:id', (req, res) => {
+router.put('/services/:id', (req, res) => {
   Service.findByIdAndUpdate(req.params.id, req.body)
       .then((response) => {
         console.log('response', response);
@@ -68,7 +68,7 @@ router.put('/Services/:id', (req, res) => {
 
 
 // DELETE route => to delete a specific Service
-router.delete('/Services/:id', (req, res) => {
+router.delete('/services/:id', (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: 'Specified id is not valid'});
   }
