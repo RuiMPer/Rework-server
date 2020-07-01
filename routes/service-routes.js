@@ -25,7 +25,7 @@ router.post('/services', (req, res) => {
   Service.create({
     title,
     description,
-    tasks: []
+    bookings: []
   })
     .then(response => {
       res.json(response);
@@ -46,8 +46,8 @@ router.get('/services/:id', (req, res) => {
   Service.findById(req.params.id)
     // getting all the tasks for this Service
     .populate('bookings')
-    .then(Service => {
-      res.json(Service);
+    .then(service => {
+      res.json(service);
     })
     .catch(error => {
       res.json(error);

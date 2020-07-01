@@ -9,6 +9,7 @@ const User = require('../models/user-model');
 authRoutes.post('/signup', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+
     if (!username || !password) {
       res.status(400).json({ message: 'Provide username and password' });
       return;
@@ -17,6 +18,7 @@ authRoutes.post('/signup', (req, res, next) => {
         res.status(400).json({ message: 'Please make your password at least 8 characters long for security purposes.' });
         return;
     }
+
     User.findOne({ username }, (err, foundUser) => {
         if(err){
             res.status(500).json({message: "Username check went bad."});
@@ -32,6 +34,7 @@ authRoutes.post('/signup', (req, res, next) => {
             username:username,
             password: hashPass
         });
+        
         aNewUser.save(err => {
             if (err) {
                 res.status(400).json({ message: 'Saving user to database went wrong.' });
