@@ -5,12 +5,37 @@ const bcrypt     = require('bcryptjs');
 
 // require the user model !!!!
 const User = require('../models/user-model');
+/*
+firstName: String,
+lastName: String,
+username: String,
+email: String,
+googleID: String,
+password: String,
+phone: Number,
+type: String, //role: worker OR client
+company: [{ type: Schema.Types.ObjectId, ref: 'Company' }],
+birthday: Date,
+photo: String, //cloudinary
+photoName: String
+*/
 
 authRoutes.post('/signup', (req, res, next) => {
     const username = req.body.username;
+    const firstName = req.body.firstName;
+	const lastName = req.body.lastName;
+    const email = req.body.email;
+    //const googleID = req.body.googleID;
     const password = req.body.password;
+    const photo = "https://res.cloudinary.com/dohdiqnba/image/upload/v1589745964/Profile%20Image/img_avatar2_jz0i0o.png";
 
-    if (!username || !password) {
+    if (
+        !firstName || 
+        !lastName || 
+        !email || 
+        !password || 
+        !username
+    ) {
       res.status(400).json({ message: 'Provide username and password' });
       return;
     }
@@ -32,7 +57,11 @@ authRoutes.post('/signup', (req, res, next) => {
         const hashPass = bcrypt.hashSync(password, salt);
         const aNewUser = new User({
             username:username,
-            password: hashPass
+            password: hashPass,
+            firstName,
+            lastName,
+            email,
+            photo
         });
         
         aNewUser.save(err => {
@@ -56,6 +85,8 @@ authRoutes.post('/signup', (req, res, next) => {
 });
 
 authRoutes.post('/login', (req, res, next) => {
+    // changing to email and password new local strategy
+    //http://www.passportjs.org/docs/configure/
   passport.authenticate('local', (err, theUser, failureDetails) => {
       if (err) {
           res.status(500).json({ message: 'Something went wrong authenticating user' });

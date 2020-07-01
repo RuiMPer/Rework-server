@@ -3,6 +3,16 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Service = require('../models/service-model');
 
+/*
+title: String,
+description: String,
+category: String, //categoria p/filtro
+bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking'}],
+author: { type: Schema.Types.ObjectId, ref: 'User'},
+photo: [{ type: String }], //cloudinary + multer
+photoName: String
+*/
+
 
 //GET route => to get all the Services
 router.get('/services', (req, res) => {
@@ -21,7 +31,9 @@ router.get('/services', (req, res) => {
 
 //POST route => to create a new Service
 router.post('/services', (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, category, photo } = req.body;
+  //const {author} = req.session...
+  
   Service.create({
     title,
     description,
