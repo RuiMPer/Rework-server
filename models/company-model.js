@@ -4,8 +4,8 @@ const Schema   = mongoose.Schema;
 const companySchema = new Schema({
   title: String,
   workers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  logo: String, //cloudinary
-  logoName: String,
+  logoPath: String, //cloudinary
+  logoName: String, // cloudinary
   locationPin: String, //google maps
   phone: String, 
   service: [{ type: Schema.Types.ObjectId, ref: 'Service' }], 
