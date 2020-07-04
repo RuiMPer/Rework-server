@@ -61,7 +61,7 @@ router.post("/bookings", (req, res) => {
 router.put("/bookings/:id", (req, res) => {
 	Booking.findByIdAndUpdate(req.params.id, req.body)
 		.then((response) => {
-			console.log("response", response);
+			// console.log("response", response);
 			res.json({ message: `Booking ${response} was updated succesfully` });
 		})
 		.catch((error) => {
@@ -78,10 +78,14 @@ router.delete("/bookings/:id", (req, res) => {
 	Booking.findByIdAndDelete(req.params.id)
 		.then((response) => {
 			Service.findByIdAndUpdate(req.body.service, {
-				$pull: { bookings: req.params._id },
-			});
-
-			res.json({ message: response });
+				$pull: { bookings: req.params.id },
+			})
+				.then(() => {
+					res.json({ message: `Booking deleted! ${response._id}` });
+				})
+				.catch((error) => {
+					res.status(500).json({ message: `Error occurred: ${error}` });
+				});
 		})
 		.catch((error) => {
 			res.status(500).json({ message: `Error occurred: ${error}` });
