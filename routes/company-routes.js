@@ -5,3 +5,9 @@ logoName: String,
 locationPin: String,
 phone: Number
 */
+
+
+//1.create, edit, delete
+//2.show company
+//3.show all
+//

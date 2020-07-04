@@ -12,6 +12,7 @@ const taskSchema = new Schema({
   logStatus: [String], //pago, presença do cliente, atraso do cliente -> SEPARAR?
   rating: Number //https://reviewapi3.docs.apiary.io/#reference/0/review-api
   //aggregate -> mongodb
+  
 })
 
 const Booking = mongoose.model('Booking', taskSchema);

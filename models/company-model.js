@@ -7,7 +7,10 @@ const companySchema = new Schema({
   logo: String, //cloudinary
   logoName: String,
   locationPin: String, //google maps
-  phone: String
+  phone: String, 
+  service: [{ type: Schema.Types.ObjectId, ref: 'Service' }], 
+  admins: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  verified: Boolean
 }, 
 {
   timestamps: true
