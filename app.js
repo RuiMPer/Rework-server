@@ -88,5 +88,6 @@ app.use('/api', require('./routes/service-routes'));
 app.use('/api', require('./routes/booking-routes'));
 app.use('/api', require('./routes/auth-routes'));
 app.use('/api', require('./routes/profile-routes'));
+app.use('/api', require('./routes/company-routes'));
 
 module.exports = app;
