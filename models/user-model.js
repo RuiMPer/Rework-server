@@ -8,11 +8,11 @@ const userSchema = new Schema({
   email: String,
   googleID: String,
   password: String,
-  phone: Number,
+  phone: String,
   type: String, //role: worker OR client OR admin
   company: [{ type: Schema.Types.ObjectId, ref: 'Company' }],
   birthday: Date,
-  photo: String, //cloudinary
+  photoPath: String, //cloudinary
   photoName: String
 }, 
 {

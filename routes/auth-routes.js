@@ -16,7 +16,7 @@ phone: Number,
 type: String, //role: worker OR client
 company: [{ type: Schema.Types.ObjectId, ref: 'Company' }],
 birthday: Date,
-photo: String, //cloudinary
+photoPath: String, //cloudinary
 photoName: String
 */
 
