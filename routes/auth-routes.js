@@ -87,30 +87,29 @@ authRoutes.post('/signup', (req, res, next) => {
 
 
 // PASSPORT NEW LOCAL STRATEGY EMAIL AND PASSWORD
-const newStrat = passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
-  },
-  function(email, password, done) {
-    User.findOne({ email: email }, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) {
-          return done(null, false, { message: 'Incorrect email.' });
-        }
-        if (!user.authenticate(password)) {
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-        return done(null, user);
-      });
-  }
-));
+// const newStrat = passport.use(new LocalStrategy({
+//     usernameField: 'email',
+//     passwordField: 'password'
+//   },
+//   function(email, password, done) {
+//     User.findOne({ email: email }, function(err, user) {
+//         if (err) { return done(err); }
+//         if (!user) {
+//           return done(null, false, { message: 'Incorrect email.' });
+//         }
+//         if (!user.authenticate(password)) {
+//           return done(null, false, { message: 'Incorrect password.' });
+//         }
+//         return done(null, user);
+//       });
+//   }
+// ));
 
-passport.use(newStrat);
 authRoutes.post('/login', (req, res, next) => {
     // changing to email and password new local strategy
     //http://www.passportjs.org/docs/configure/
 
-    passport.authenticate('newStrat', (err, theUser, failureDetails) => {
+    passport.authenticate('local', (err, theUser, failureDetails) => {
         if (err) {
             res.status(500).json({ message: 'Something went wrong authenticating user' });
             return;
