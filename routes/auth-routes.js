@@ -1,6 +1,7 @@
 const express    = require('express');
 const authRoutes = express.Router();
 const passport   = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const bcrypt     = require('bcryptjs');
 
 // require the user model !!!!
@@ -61,7 +62,7 @@ authRoutes.post('/signup', (req, res, next) => {
             firstName,
             lastName,
             email,
-            photo
+            photoUrl
         });
         
         aNewUser.save(err => {
@@ -84,30 +85,52 @@ authRoutes.post('/signup', (req, res, next) => {
     });
 });
 
+
+// PASSPORT NEW LOCAL STRATEGY EMAIL AND PASSWORD
+const newStrat = passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  },
+  function(email, password, done) {
+    User.findOne({ email: email }, function(err, user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect email.' });
+        }
+        if (!user.authenticate(password)) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+      });
+  }
+));
+
+passport.use(newStrat);
 authRoutes.post('/login', (req, res, next) => {
     // changing to email and password new local strategy
     //http://www.passportjs.org/docs/configure/
-  passport.authenticate('local', (err, theUser, failureDetails) => {
-      if (err) {
-          res.status(500).json({ message: 'Something went wrong authenticating user' });
-          return;
-      }
-      if (!theUser) {
-          // "failureDetails" contains the error messages
-          // from our logic in "LocalStrategy" { message: '...' }.
-          res.status(401).json(failureDetails);
-          return;
-      }
-      // save user in session
-      req.login(theUser, (err) => {
-          if (err) {
-              res.status(500).json({ message: 'Session save went bad.' });
-              return;
-          }
-          // We are now logged in (that's why we can also send req.user)
-          res.status(200).json(theUser);
-      });
-  })(req, res, next);
+
+    passport.authenticate('newStrat', (err, theUser, failureDetails) => {
+        if (err) {
+            res.status(500).json({ message: 'Something went wrong authenticating user' });
+            return;
+        }
+        if (!theUser) {
+            // "failureDetails" contains the error messages
+            // from our logic in "LocalStrategy" { message: '...' }.
+            res.status(401).json(failureDetails);
+            return;
+        }
+        // save user in session
+        req.login(theUser, (err) => {
+            if (err) {
+                res.status(500).json({ message: 'Session save went bad.' });
+                return;
+            }
+            // We are now logged in (that's why we can also send req.user)
+            res.status(200).json(theUser);
+        });
+    })(req, res, next);
 });
 
 authRoutes.post('/logout', (req, res, next) => {
