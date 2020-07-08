@@ -61,7 +61,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   rolling: true,
-  cookie: { expires: 60000 }
+  cookie: { expires: 600000 }
 }));
 
 // USE passport.initialize() and passport.session() HERE:
@@ -89,5 +89,6 @@ app.use('/api', require('./routes/booking-routes'));
 app.use('/api', require('./routes/auth-routes'));
 app.use('/api', require('./routes/profile-routes'));
 app.use('/api', require('./routes/company-routes'));
+app.use("/api", require("./routes/image-routes"))
 
 module.exports = app;

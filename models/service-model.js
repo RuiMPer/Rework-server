@@ -8,7 +8,7 @@ const ServiceSchema = new Schema({
   category: [String], //categoria p/filtro - array de strings
   bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
   author: { type: Schema.Types.ObjectId, ref: 'User' },
-  photo: [{ type: String }], //cloudinary + multer
+  photoPath: [{ type: String }], //cloudinary + multer
   photoName: String,
   company: { type: Schema.Types.ObjectId, ref: "Company" }
 }, {

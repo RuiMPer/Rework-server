@@ -31,13 +31,13 @@ router.get('/services', (req, res) => {
 
 //POST route => to create a new Service
 router.post('/services', (req, res) => {
-  const { title, description, category, photo } = req.body;
+  const { title, description, category, photo } = req.body;
   //const {author} = req.session...
-  
+
   Service.create({
     title,
     description,
-    bookings: []
+    category
   })
     .then(response => {
       res.json(response);
@@ -54,7 +54,7 @@ router.get('/services/:id', (req, res) => {
     res.status(400).json({message: 'id is not valid'});
     return;
   }
-  
+
   Service.findById(req.params.id)
     // getting all the bookings for this Service
     .populate('bookings')
@@ -69,13 +69,13 @@ router.get('/services/:id', (req, res) => {
 // PUT route => to update a specific Service
 router.put('/services/:id', (req, res) => {
   Service.findByIdAndUpdate(req.params.id, req.body)
-      .then((response) => {
-        console.log('response', response);
-        res.json({ message: `Service ${response} was updated succesfully`});
-      })
-      .catch(error => {
-        res.json(error);
-      }) 
+    .then((response) => {
+      console.log('response', response);
+      res.json({ message: `Service ${response} was updated succesfully`});
+    })
+    .catch(error => {
+      res.json(error);
+    })
 });
 
 
