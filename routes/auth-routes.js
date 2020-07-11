@@ -1,8 +1,8 @@
-const express    = require('express');
+const express = require('express');
 const authRoutes = express.Router();
-const passport   = require('passport');
+const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt     = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 // require the user model !!!!
 const User = require('../models/user-model');
@@ -24,47 +24,47 @@ photoName: String
 authRoutes.post('/signup', (req, res, next) => {
     const username = req.body.username;
     const firstName = req.body.firstName;
-	const lastName = req.body.lastName;
+    const lastName = req.body.lastName;
     const email = req.body.email;
     //const googleID = req.body.googleID;
     const password = req.body.password;
-    const photo = "https://res.cloudinary.com/dohdiqnba/image/upload/v1589745964/Profile%20Image/img_avatar2_jz0i0o.png";
+    const photoUrl = "https://res.cloudinary.com/dohdiqnba/image/upload/v1589745964/Profile%20Image/img_avatar2_jz0i0o.png";
 
     if (
-        !firstName || 
-        !lastName || 
-        !email || 
-        !password || 
+        !firstName ||
+        !lastName ||
+        !email ||
+        !password ||
         !username
     ) {
-      res.status(400).json({ message: 'Provide username and password' });
-      return;
+        res.status(400).json({ message: 'Provide username and password' });
+        return;
     }
-    if(password.length < 7){
+    if (password.length < 7) {
         res.status(400).json({ message: 'Please make your password at least 8 characters long for security purposes.' });
         return;
     }
 
     User.findOne({ username }, (err, foundUser) => {
-        if(err){
-            res.status(500).json({message: "Username check went bad."});
+        if (err) {
+            res.status(500).json({ message: "Username check went bad." });
             return;
         }
         if (foundUser) {
             res.status(400).json({ message: 'Username taken. Choose another one.' });
             return;
         }
-        const salt     = bcrypt.genSaltSync(10);
+        const salt = bcrypt.genSaltSync(10);
         const hashPass = bcrypt.hashSync(password, salt);
         const aNewUser = new User({
-            username:username,
+            username: username,
             password: hashPass,
             firstName,
             lastName,
             email,
             photoUrl
         });
-        
+
         aNewUser.save(err => {
             if (err) {
                 res.status(400).json({ message: 'Saving user to database went wrong.' });
@@ -133,18 +133,18 @@ authRoutes.post('/login', (req, res, next) => {
 });
 
 authRoutes.post('/logout', (req, res, next) => {
-  // req.logout() is defined by passport
-  req.logout();
-  res.status(200).json({ message: 'Log out success!' });
+    // req.logout() is defined by passport
+    req.logout();
+    res.status(200).json({ message: 'Log out success!' });
 });
 
 authRoutes.get('/loggedin', (req, res, next) => {
-  // req.isAuthenticated() is defined by passport
-  if (req.isAuthenticated()) {
-      res.status(200).json(req.user);
-      return;
-  }
-  res.status(200).json({});
+    // req.isAuthenticated() is defined by passport
+    if (req.isAuthenticated()) {
+        res.status(200).json(req.user);
+        return;
+    }
+    res.status(200).json({});
 });
 
 module.exports = authRoutes;
