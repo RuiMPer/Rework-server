@@ -31,7 +31,7 @@ router.get('/services', (req, res) => {
 
 //POST route => to create a new Service
 router.post('/services', (req, res) => {
-  const { title, description, category, photo } = req.body;
+  const { title, description, category, photoPath } = req.body;
   //const {author} = req.session...
 
   Service.create({
@@ -40,7 +40,12 @@ router.post('/services', (req, res) => {
     category
   })
     .then(response => {
-      res.json(response);
+      console.log(response)
+      return Service.findByIdAndUpdate(response._id, { $push: { photoPath: photoPath } })
+        .then(data => {
+          console.log(data)
+          res.json(data);
+        })
     })
     .catch(err => {
       res.json(err);
@@ -51,7 +56,7 @@ router.post('/services', (req, res) => {
 //GET route => get a specific Service using the id
 router.get('/services/:id', (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({message: 'id is not valid'});
+    res.status(400).json({ message: 'id is not valid' });
     return;
   }
 
@@ -71,7 +76,7 @@ router.put('/services/:id', (req, res) => {
   Service.findByIdAndUpdate(req.params.id, req.body)
     .then((response) => {
       console.log('response', response);
-      res.json({ message: `Service ${response} was updated succesfully`});
+      res.json({ message: `Service ${response} was updated succesfully` });
     })
     .catch(error => {
       res.json(error);
@@ -82,15 +87,15 @@ router.put('/services/:id', (req, res) => {
 // DELETE route => to delete a specific Service
 router.delete('/services/:id', (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({ message: 'Specified id is not valid'});
+    res.status(400).json({ message: 'Specified id is not valid' });
   }
 
   Service.findByIdAndDelete(req.params.id)
     .then((response) => {
-      res.json({ message: response})
+      res.json({ message: response })
     })
     .catch(error => {
-      res.status(500).json({ message: `Error occurred: ${error}`});
+      res.status(500).json({ message: `Error occurred: ${error}` });
     });
 });
 

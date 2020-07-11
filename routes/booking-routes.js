@@ -34,12 +34,11 @@ router.get("/bookings/:id", (req, res) => {
 
 // POST route => to create a new Booking
 router.post("/bookings", (req, res) => {
-	const { title, description, date, service, time } = req.body;
+	const { title, description, date, time } = req.body;
 	Booking.create({
 		title,
 		description,
 		date,
-		service,
 		time,
 		confirmationStatus: true,
 		logStatus: ["unpaid", "not present", "not delay"],
