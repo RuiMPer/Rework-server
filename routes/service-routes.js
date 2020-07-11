@@ -33,7 +33,7 @@ router.get('/services', (req, res) => {
 router.post('/services', (req, res) => {
   const { title, description, category, photoPath } = req.body;
   //const {author} = req.session...
-
+console.log('photopath', photoPath);
   Service.create({
     title,
     description,
