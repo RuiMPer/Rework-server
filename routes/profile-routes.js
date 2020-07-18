@@ -37,22 +37,8 @@ router.get('/profile/:userId', (req, res, next) => {
     });
 });
 
-//GET user edit route
-router.get("/profile/:userId/edit", (req, res) => {
-  let userId= req.params.userId;
-  
-	User.findById(userId)
-		.then((theUser) => {
-      console.log(theUser);
-      res.json(theUser);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-});
-
 //POST user edit post
-router.post("/profile/:userId/edit", (req, res) => {
+router.post("/profile/:userId", (req, res) => {
   let userId= req.params.userId;
   
 	const { 
@@ -64,7 +50,8 @@ router.post("/profile/:userId/edit", (req, res) => {
     company,
     phone,
     type,
-    birthday
+    birthday,
+    photoPath
   } = req.body;
 
   User.findOneAndUpdate(
@@ -84,7 +71,12 @@ router.post("/profile/:userId/edit", (req, res) => {
     {new: true}
   )
   .then((user) => {
-    res.json(user);
+    console.log(user)
+      return User.findByIdAndUpdate(user._id, { $push: { photoPath: photoPath } })
+        .then(data => {
+          console.log(data)
+          res.json(data);
+        })
   })
   .catch((error) => {
     console.log(error);
