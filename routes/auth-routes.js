@@ -26,18 +26,22 @@ authRoutes.post('/signup', (req, res, next) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
+    const type = req.body.type;
     //const googleID = req.body.googleID;
     const password = req.body.password;
     const photoUrl = "https://res.cloudinary.com/dohdiqnba/image/upload/v1589745964/Profile%20Image/img_avatar2_jz0i0o.png";
+
+    console.log(req.body)
 
     if (
         !firstName ||
         !lastName ||
         !email ||
         !password ||
-        !username
-    ) {
-        res.status(400).json({ message: 'Provide username and password' });
+        !username ||
+        !type
+    ) {console.log(firstName, type, lastName, email, password, username)
+        res.status(400).json({ message: 'All fields are required!' });
         return;
     }
     if (password.length < 7) {
@@ -62,7 +66,8 @@ authRoutes.post('/signup', (req, res, next) => {
             firstName,
             lastName,
             email,
-            photoUrl
+            photoUrl,
+            type
         });
 
         aNewUser.save(err => {
