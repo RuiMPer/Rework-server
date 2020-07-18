@@ -31,13 +31,14 @@ router.get('/services', (req, res) => {
 
 //POST route => to create a new Service
 router.post('/services', (req, res) => {
-  const { title, description, category, photoPath } = req.body;
+  const { title, description, category, photoPath, author } = req.body;
   //const {author} = req.session...
-console.log('photopath', photoPath);
+  console.log('photopath', photoPath);
   Service.create({
     title,
     description,
-    category
+    category,
+    author
   })
     .then(response => {
       console.log(response)
