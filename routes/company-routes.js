@@ -40,7 +40,7 @@ router.get("/company/:id", (req, res) => {
 
 // POST route => to create a new Company
 router.post("/company", (req, res) => {
-	const { title, description, phone, service, logoPath, logoName, admins } = req.body;
+	const { title, description, phone, service, logoPath, logoName, admins, workers } = req.body;
 	Company.create({
 		title,
 		description,
@@ -49,6 +49,7 @@ router.post("/company", (req, res) => {
 		logoName,
 		service,
 		admins, //precisamos de ir buscar o id de quem está a criar
+		workers,
 		verified: false
 	}).then(response => {
 		User.findByIdAndUpdate(req.body.admins, {
