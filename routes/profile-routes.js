@@ -25,11 +25,10 @@ const User = require('../models/user-model');
 router.get('/profile/:userId', (req, res, next) => {
   let userId= req.params.userId
     //theUser = req;
-    console.log(userId);
 
     User.findById(userId)
     .then((theUser) => {
-      console.log(theUser);
+      console.log('THE USER', theUser)
       res.json(theUser);
     })
     .catch((error) => {
@@ -40,6 +39,8 @@ router.get('/profile/:userId', (req, res, next) => {
 //POST user edit post
 router.post("/profile/:userId", (req, res) => {
   let userId= req.params.userId;
+
+  console.log("userID", userId)
   
 	const { 
     firstName,
@@ -54,6 +55,8 @@ router.post("/profile/:userId", (req, res) => {
     photoPath
   } = req.body;
 
+  console.log("THIS IS REQ BODY FOR PHOTOPATH", req.body.photoPath)
+
   User.findOneAndUpdate(
     { _id: userId },
     { $set: { 
@@ -65,7 +68,7 @@ router.post("/profile/:userId", (req, res) => {
         company,
         phone,
         type,
-        birthday 
+        birthday
       } 
     },
     {new: true}

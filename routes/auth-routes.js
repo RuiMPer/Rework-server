@@ -29,9 +29,9 @@ authRoutes.post('/signup', (req, res, next) => {
     const type = req.body.type;
     //const googleID = req.body.googleID;
     const password = req.body.password;
-    const photoUrl = "https://res.cloudinary.com/dohdiqnba/image/upload/v1589745964/Profile%20Image/img_avatar2_jz0i0o.png";
+    const photoPath = 'https://res.cloudinary.com/dohdiqnba/image/upload/v1589745964/Profile%20Image/img_avatar2_jz0i0o.png';
 
-    console.log(req.body)
+    console.log(req.body);
 
     if (
         !firstName ||
@@ -40,7 +40,7 @@ authRoutes.post('/signup', (req, res, next) => {
         !password ||
         !username ||
         !type
-    ) {console.log(firstName, type, lastName, email, password, username)
+    ) {console.log(firstName, type, lastName, email, password, username, photoPath)
         res.status(400).json({ message: 'All fields are required!' });
         return;
     }
@@ -66,7 +66,7 @@ authRoutes.post('/signup', (req, res, next) => {
             firstName,
             lastName,
             email,
-            photoUrl,
+            photoPath,
             type
         });
 
@@ -82,6 +82,7 @@ authRoutes.post('/signup', (req, res, next) => {
                     res.status(500).json({ message: 'Login after signup went bad.' });
                     return;
                 }
+                console.log("A NEW USER", aNewUser)
                 // Send the user's information to the frontend
                 // We can use also: res.status(200).json(req.user);
                 res.status(200).json(aNewUser);
@@ -131,6 +132,7 @@ authRoutes.post('/login', (req, res, next) => {
                     res.status(500).json({ message: 'Session save went bad.' });
                     return;
                 }
+                console.log("THE USER IS LOGIN", theUser)
                 // We are now logged in (that's why we can also send req.user)
                 res.status(200).json(theUser);
             });
