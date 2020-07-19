@@ -1,7 +1,7 @@
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const mongoose = require('mongoose');
-const passport   = require('passport');
+const passport = require('passport');
 
 
 // require the user model !!!!
@@ -23,10 +23,10 @@ const User = require('../models/user-model');
 
 /* GET profile page */
 router.get('/profile/:userId', (req, res, next) => {
-  let userId= req.params.userId
-    //theUser = req;
+  let userId = req.params.userId
+  //theUser = req;
 
-    User.findById(userId)
+  User.findById(userId)
     .then((theUser) => {
       console.log('THE USER', theUser)
       res.json(theUser);
@@ -38,11 +38,11 @@ router.get('/profile/:userId', (req, res, next) => {
 
 //POST user edit post
 router.post("/profile/:userId", (req, res) => {
-  let userId= req.params.userId;
+  let userId = req.params.userId;
 
   console.log("userID", userId)
-  
-	const { 
+
+  const {
     firstName,
     lastName,
     username,
@@ -59,7 +59,8 @@ router.post("/profile/:userId", (req, res) => {
 
   User.findOneAndUpdate(
     { _id: userId },
-    { $set: { 
+    {
+      $set: {
         firstName,
         lastName,
         username,
@@ -68,22 +69,21 @@ router.post("/profile/:userId", (req, res) => {
         company,
         phone,
         type,
-        birthday
-      } 
+        birthday,
+        photoPath
+      }
     },
-    {new: true}
+    { new: true }
   )
-  .then((user) => {
-    console.log(user)
-      return User.findByIdAndUpdate(user._id, { $push: { photoPath: photoPath } })
-        .then(data => {
-          console.log(data)
-          res.json(data);
-        })
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    .then(user => {
+      console.log(user)
+      // return User.findByIdAndUpdate(user._id, { $push: { photoPath: photoPath } })
+      // .then(data => {
+      //   console.log(data)
+      //   res.json(data);
+    }).catch((error) => {
+      console.log(error);
+    })
 });
 
 
