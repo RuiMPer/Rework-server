@@ -10,7 +10,8 @@ const companySchema = new Schema({
   phone: String, 
   service: [{ type: Schema.Types.ObjectId, ref: 'Service' }], 
   admins: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  verified: Boolean
+  verified: Boolean,
+  companyProof: String
 }, 
 {
   timestamps: true
