@@ -57,7 +57,7 @@ router.post("/bookings", (req, res) => {
 });
 
 // Update Route => to update a specific Booking
-router.put("/bookings/:id/edit", (req, res) => {
+router.put("/bookings/:id", (req, res) => {
 	Booking.findByIdAndUpdate(req.params.id, req.body)
 		.then((response) => {
 			// console.log("response", response);
