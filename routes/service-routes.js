@@ -14,10 +14,24 @@ photoName: String
 */
 
 
-//GET route => to get all the Services
-router.get('/services', (req, res) => {
+// GET route => to get all the Services
+router.get('/allservices', (req, res) => {
   // Gets data from mongoDB
   Service.find()
+    .then(allServices => {
+      // will do something with the result
+      res.json(allServices);
+    })
+    .catch(err => {
+      // will do something else
+      res.json(err);
+    })
+});
+
+//GET route => to get user Services
+router.get('/services', (req, res) => {
+  // Gets data from mongoDB
+  Service.find({ author: req.user })
     .then(allServices => {
       // will do something with the result
       res.json(allServices);
