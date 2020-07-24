@@ -24,9 +24,11 @@ router.get('/company', (req, res) => {
 // GET route => to retrieve a specific company
 router.get("/company/:id", (req, res) => {
 	Company.findById(req.params.id)
-		.populate('services')
-		.then((Company) => {
-			res.json(Company);
+		//.populate('service')
+		.then((response) => {
+			console.log(response)
+			res.json(response);
+			
 		})
 		.catch((err) => {
 			// will do something else
@@ -41,20 +43,28 @@ router.post("/company", (req, res) => {
 	console.log("req session", req.session);
 
 	//const logoPath = 'https://www.pharmamirror.com/wp-content/themes/fox/images/placeholder.jpg';
+	//let logoPath = 'https://www.childhood.org.au/app/uploads/2017/07/ACF-logo-placeholder.png';
 	let { title,
 			logoName,
+			logoPath,
 			locationPin,
 			phone,
-			admins,
-			logoPath,
-			workers,
 			verified, 
 			companyProof,
 			isAdmin } = req.body;
 
+	let admins, workers;
+
+	
 	if(isAdmin=="Eu próprio"){
 		admins=[];
-		admins.push(req.user)
+		workers=[];
+		admins.push(req.user._id);
+		workers.push(req.user._id);
+	}
+	else{
+		workers=[];
+		workers.push(req.user._id);
 	}
 
 	Company.create({
@@ -71,14 +81,12 @@ router.post("/company", (req, res) => {
 		User.findByIdAndUpdate(req.user, {
 			$push: { company: response._id },
 		})
-		.then((response) => {
-			res.json({ message: `Company ${response._id} was created succesfully` });
-		})
-		.catch((err) => {
-			// will do something else
-			res.json(err);
-		});
-	})
+		res.json({ message: `Company ${response._id} was created succesfully` , response});
+		
+	}).catch((err) => {
+		// will do something else
+		res.json(err);
+	});
 });
 
 // Update Route => to update a company
