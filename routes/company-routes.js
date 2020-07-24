@@ -1,7 +1,3 @@
-//1.create, edit, delete
-//2.show company
-//3.show all
-//
 
 const express = require("express");
 const router = express.Router();
@@ -40,29 +36,48 @@ router.get("/company/:id", (req, res) => {
 
 // POST route => to create a new Company
 router.post("/company", (req, res) => {
-	console.log(req.user);
-	const { title, description, phone, service, logoPath, logoName, admins, workers } = req.body;
+	console.log('REQ USER',req.user);
+	console.log("req session user", req.session.user);
+	console.log("req session", req.session);
+
+	//const logoPath = 'https://www.pharmamirror.com/wp-content/themes/fox/images/placeholder.jpg';
+	let { title,
+			logoName,
+			locationPin,
+			phone,
+			admins,
+			logoPath,
+			workers,
+			verified, 
+			companyProof,
+			isAdmin } = req.body;
+
+	if(isAdmin=="Eu próprio"){
+		admins=[];
+		admins.push(req.user)
+	}
+
 	Company.create({
 		title,
-		description,
-		phone,
 		logoPath,
 		logoName,
-		service,
-		admins, //precisamos de ir buscar o id de quem está a criar
+		locationPin,
+		phone,
+		admins,
 		workers,
-		verified: false
+		companyProof,
+		verified
 	}).then(response => {
-		User.findByIdAndUpdate(req.body.admins, {
+		User.findByIdAndUpdate(req.user, {
 			$push: { company: response._id },
 		})
-			.then((response) => {
-				res.json({ message: `Company ${response._id} was created succesfully` });
-			})
-			.catch((err) => {
-				// will do something else
-				res.json(err);
-			});
+		.then((response) => {
+			res.json({ message: `Company ${response._id} was created succesfully` });
+		})
+		.catch((err) => {
+			// will do something else
+			res.json(err);
+		});
 	})
 });
 
