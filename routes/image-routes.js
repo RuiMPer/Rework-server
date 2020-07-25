@@ -8,4 +8,10 @@ router.post('/upload', uploadCloud.single("photoPath"), (req, res, next) => {
 	res.json({ photoPath: req.file.secure_url});
 })
 
+router.post('/uploadMultiple', uploadCloud.array("photoPath"), (req, res, next) => {
+	//console.log("REQ FILE", req.file)
+	console.log(req)
+	res.json( "OK");
+})
+
 module.exports = router;
