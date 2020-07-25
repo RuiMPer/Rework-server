@@ -5,7 +5,7 @@ const passport = require('passport');
 
 
 // require the user model !!!!
-const User = require('../models/user-model');
+const User = require('../models/usermodel');
 
 /* GET profile page */
 router.get('/profile/:userId', (req, res, next) => {
