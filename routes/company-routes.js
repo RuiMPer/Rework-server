@@ -2,9 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const Company = require("../models/company-model");
-const Service = require("../models/service-model")
-const User = require("../models/user-model")
+const Company = require("../models/companymodel");
+const Service = require("../models/servicemodel")
+const User = require("../models/usermodel")
 
 // GET route => show all companies
 router.get('/company', (req, res) => {

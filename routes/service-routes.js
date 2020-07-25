@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Service = require('../models/service-model');
+const Service = require('../models/servicemodel');
 
 /*
 title: String,

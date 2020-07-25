@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const Service = require("../models/service-model");
-const Booking = require("../models/booking-model");
+const Service = require("../models/servicemodel");
+const Booking = require("../models/bookingmodel");
 
 //API Calendar + model bookings
 //worker fazer marcações + client tb !!!!!!
