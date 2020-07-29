@@ -88,7 +88,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    // credentials: true,
+    credentials: true,
     origin: [`${process.env.FRONTEND_URL}`, "http://finalproject-rework-app-ironhack.s3-website-eu-west-1.amazonaws.com"]
   })
 )
