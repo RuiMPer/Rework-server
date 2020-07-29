@@ -26,7 +26,7 @@ router.get("/company/:id", (req, res) => {
 	Company.findById(req.params.id)
 		//.populate('service')
 		.then((response) => {
-			console.log(response)
+			//console.log(response)
 			res.json(response);
 			
 		})
@@ -38,20 +38,20 @@ router.get("/company/:id", (req, res) => {
 
 // POST route => to create a new Company
 router.post("/company", (req, res) => {
-	console.log('REQ USER',req.user);
-	console.log("req session user", req.session.user);
-	console.log("req session", req.session);
+	//console.log('REQ USER',req.user);
+	//console.log("req session user", req.session.user);
+	//console.log("req session", req.session);
 
 	//const logoPath = 'https://www.pharmamirror.com/wp-content/themes/fox/images/placeholder.jpg';
 	//let logoPath = 'https://www.childhood.org.au/app/uploads/2017/07/ACF-logo-placeholder.png';
 	let { title,
-			logoName,
-			logoPath,
-			locationPin,
-			phone,
-			verified, 
-			companyProof,
-			isAdmin } = req.body;
+		logoName,
+		logoPath,
+		locationPin,
+		phone,
+		verified, 
+		companyProof,
+		isAdmin } = req.body;
 
 	let admins, workers;
 
@@ -78,10 +78,17 @@ router.post("/company", (req, res) => {
 		companyProof,
 		verified
 	}).then(response => {
-		User.findByIdAndUpdate(req.user, {
-			$push: { company: response._id },
+		console.log("company response", response)
+		console.log("req user response", req.user)
+		console.log("req user id response", req.user._id)
+
+		User.findByIdAndUpdate(req.user._id, { 
+			$set: { company: response._id }
 		})
-		res.json({ message: `Company ${response._id} was created succesfully` , response});
+		.then(()=> {
+			res.json({ message: `Company ${response._id} was created succesfully` , response});
+		});
+		
 		
 	}).catch((err) => {
 		// will do something else
